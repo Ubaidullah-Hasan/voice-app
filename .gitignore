@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+npm-debug.log*
+
+runtime/
+src/renderer/transcription.worker.bundle.js

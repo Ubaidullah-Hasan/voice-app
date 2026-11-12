@@ -1,0 +1,81 @@
+{
+  "name": "voice-scribe",
+  "version": "1.0.0",
+  "description": "Professional offline Speech-to-Text desktop app for Windows supporting English and Bengali",
+  "main": "src/main/main.js",
+  "scripts": {
+    "dev": "electron .",
+    "build": "electron-builder --win",
+    "build:dir": "electron-builder --win --dir",
+    "postinstall": "electron-builder install-app-deps",
+    "build:worker": "node scripts/build-worker.cjs",
+    "predev": "npm run build:worker",
+    "prebuild": "npm run build:worker",
+    "prebuild:dir": "npm run build:worker",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "keywords": [
+    "speech-to-text",
+    "voice",
+    "whisper",
+    "electron",
+    "offline",
+    "bengali"
+  ],
+  "author": "VoiceScribe",
+  "license": "MIT",
+  "dependencies": {
+    "@huggingface/transformers": "^3.5.0"
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3",
+    "esbuild": "0.25.12"
+  },
+  "build": {
+    "appId": "com.voicescribe.app",
+    "productName": "VoiceScribe",
+    "copyright": "Copyright © 2026 VoiceScribe",
+    "icon": "assets/icon.ico",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "runtime/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeaderIcon": "assets/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "VoiceScribe"
+    },
+    "extraResources": [
+      {
+        "from": "assets/",
+        "to": "assets/",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
+  }
+}

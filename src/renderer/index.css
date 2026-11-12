@@ -1,0 +1,751 @@
+/* =========================================================
+   VoiceScribe — Premium Design System
+   Deep space dark theme with violet/indigo accents
+   ========================================================= */
+
+/* ---- CSS Custom Properties (Design Tokens) ---- */
+:root {
+  /* Color Palette */
+  --clr-bg-base:        hsl(228, 15%, 8%);
+  --clr-bg-surface:     hsl(228, 14%, 11%);
+  --clr-bg-elevated:    hsl(228, 13%, 15%);
+  --clr-bg-overlay:     hsl(228, 12%, 18%);
+  --clr-border:         hsl(228, 12%, 22%);
+  --clr-border-subtle:  hsl(228, 10%, 17%);
+
+  /* Accent: Violet → Indigo gradient */
+  --clr-accent-1:       hsl(261, 80%, 65%);
+  --clr-accent-2:       hsl(232, 85%, 65%);
+  --clr-accent-glow:    hsl(261, 80%, 65%, 0.25);
+  --clr-accent-gradient: linear-gradient(135deg, var(--clr-accent-1), var(--clr-accent-2));
+
+  /* Semantic */
+  --clr-danger:         hsl(0, 72%, 60%);
+  --clr-danger-glow:    hsl(0, 72%, 60%, 0.25);
+  --clr-success:        hsl(145, 60%, 50%);
+  --clr-warning:        hsl(38, 90%, 58%);
+
+  /* Text */
+  --clr-text-primary:   hsl(220, 20%, 92%);
+  --clr-text-secondary: hsl(220, 12%, 60%);
+  --clr-text-muted:     hsl(220, 10%, 40%);
+  --clr-text-accent:    var(--clr-accent-1);
+
+  /* Waveform bar active */
+  --clr-wave-active:    var(--clr-accent-1);
+  --clr-wave-idle:      hsl(228, 12%, 22%);
+
+  /* Typography */
+  --font-sans:  system-ui, 'Segoe UI', sans-serif;
+  --font-mono:  'Cascadia Mono', Consolas, monospace;
+
+  /* Spacing */
+  --sp-xs:  4px;
+  --sp-sm:  8px;
+  --sp-md:  16px;
+  --sp-lg:  24px;
+  --sp-xl:  32px;
+
+  /* Radii */
+  --r-sm:   6px;
+  --r-md:   12px;
+  --r-lg:   18px;
+  --r-xl:   24px;
+  --r-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm:    0 1px 3px hsl(0,0%,0%,0.4);
+  --shadow-md:    0 4px 16px hsl(0,0%,0%,0.5);
+  --shadow-lg:    0 8px 32px hsl(0,0%,0%,0.6);
+  --shadow-glow:  0 0 24px var(--clr-accent-glow);
+
+  /* Transitions */
+  --t-fast:   0.15s ease;
+  --t-base:   0.25s ease;
+  --t-slow:   0.4s ease;
+
+  /* Layout */
+  --sidebar-width: 240px;
+  --titlebar-height: 38px;
+}
+
+/* ---- Reset & Base ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--clr-text-primary);
+  background: var(--clr-bg-base);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--clr-border);
+  border-radius: var(--r-full);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--clr-text-muted); }
+
+/* ============================================================
+   TITLEBAR
+   ============================================================ */
+.titlebar {
+  height: var(--titlebar-height);
+  background: var(--clr-bg-base);
+  border-bottom: 1px solid var(--clr-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--sp-md);
+  position: relative;
+  z-index: 100;
+}
+
+.titlebar-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+}
+
+.titlebar-icon { font-size: 16px; }
+.titlebar-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--clr-text-primary);
+  letter-spacing: 0.01em;
+}
+
+.titlebar-status {
+  font-size: 11px;
+  color: var(--clr-text-muted);
+  font-weight: 500;
+  padding: 2px 10px;
+  background: var(--clr-bg-elevated);
+  border-radius: var(--r-full);
+  border: 1px solid var(--clr-border-subtle);
+  -webkit-app-region: no-drag;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.app-layout {
+  display: flex;
+  height: calc(100vh - var(--titlebar-height));
+  overflow: hidden;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--clr-bg-surface);
+  border-right: 1px solid var(--clr-border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.sidebar-section {
+  padding: var(--sp-md);
+  border-bottom: 1px solid var(--clr-border-subtle);
+}
+
+.sidebar-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clr-text-muted);
+  margin-bottom: var(--sp-sm);
+}
+
+/* Language Selector */
+.language-selector {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-xs);
+}
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  padding: var(--sp-sm) var(--sp-md);
+  background: var(--clr-bg-elevated);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-md);
+  color: var(--clr-text-secondary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--t-base);
+  -webkit-app-region: no-drag;
+}
+
+.lang-btn:hover {
+  background: var(--clr-bg-overlay);
+  color: var(--clr-text-primary);
+  border-color: var(--clr-accent-1);
+}
+
+.lang-btn.active {
+  background: linear-gradient(135deg, hsl(261,80%,65%,0.15), hsl(232,85%,65%,0.15));
+  border-color: var(--clr-accent-1);
+  color: var(--clr-text-primary);
+  box-shadow: 0 0 12px var(--clr-accent-glow);
+}
+
+.lang-flag { font-size: 16px; }
+
+/* Model Status */
+.model-status-card {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  padding: var(--sp-sm) var(--sp-md);
+  background: var(--clr-bg-elevated);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-md);
+}
+
+.model-status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--r-full);
+  background: var(--clr-text-muted);
+  flex-shrink: 0;
+  transition: background var(--t-base), box-shadow var(--t-base);
+}
+.model-status-indicator.loading {
+  background: var(--clr-warning);
+  animation: pulse-dot 1.2s infinite;
+}
+.model-status-indicator.ready {
+  background: var(--clr-success);
+  box-shadow: 0 0 8px hsl(145,60%,50%,0.5);
+}
+.model-status-indicator.error {
+  background: var(--clr-danger);
+}
+
+.model-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--clr-text-primary);
+  font-family: var(--font-mono);
+}
+.model-detail {
+  font-size: 11px;
+  color: var(--clr-text-muted);
+  margin-top: 1px;
+}
+
+/* Model Actions */
+.model-actions {
+  margin-top: var(--sp-sm);
+  display: flex;
+  gap: var(--sp-xs);
+}
+.model-action-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 5px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: var(--font-sans);
+  color: var(--clr-text-muted);
+  background: var(--clr-bg-elevated);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: all var(--t-base);
+  -webkit-app-region: no-drag;
+}
+.model-action-btn:hover {
+  color: var(--clr-text-primary);
+  border-color: var(--clr-accent-1);
+  background: var(--clr-bg-overlay);
+}
+
+/* Download Progress */
+.download-progress-wrap { margin-top: var(--sp-sm); }
+.download-label {
+  font-size: 11px;
+  color: var(--clr-text-secondary);
+  margin-bottom: 6px;
+}
+.progress-bar-bg {
+  height: 4px;
+  background: var(--clr-bg-overlay);
+  border-radius: var(--r-full);
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: var(--clr-accent-gradient);
+  border-radius: var(--r-full);
+  width: 0%;
+  transition: width 0.3s ease;
+}
+.progress-pct {
+  font-size: 11px;
+  color: var(--clr-text-muted);
+  text-align: right;
+  margin-top: 4px;
+}
+
+/* Info Grid */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-sm);
+}
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-sm);
+  padding: var(--sp-sm);
+  background: var(--clr-bg-elevated);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--clr-border-subtle);
+}
+.info-icon { font-size: 16px; }
+.info-value {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--clr-text-primary);
+}
+.info-key {
+  font-size: 10px;
+  color: var(--clr-text-muted);
+  margin-top: 1px;
+}
+
+/* Settings */
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-xs) 0;
+}
+.setting-label {
+  font-size: 12px;
+  color: var(--clr-text-secondary);
+}
+
+/* Toggle Switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+.toggle-switch input { display: none; }
+.toggle-thumb {
+  position: absolute;
+  inset: 0;
+  background: var(--clr-bg-overlay);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--r-full);
+  transition: all var(--t-base);
+}
+.toggle-thumb::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  background: var(--clr-text-muted);
+  border-radius: var(--r-full);
+  transition: all var(--t-base);
+}
+.toggle-switch input:checked + .toggle-thumb {
+  background: linear-gradient(135deg, hsl(261,80%,65%,0.3), hsl(232,85%,65%,0.3));
+  border-color: var(--clr-accent-1);
+}
+.toggle-switch input:checked + .toggle-thumb::after {
+  left: 18px;
+  background: var(--clr-accent-1);
+}
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: 0;
+}
+
+/* ============================================================
+   VISUALIZER SECTION
+   ============================================================ */
+.visualizer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-lg);
+  padding: var(--sp-xl) var(--sp-lg) var(--sp-lg);
+  background: var(--clr-bg-surface);
+  border-bottom: 1px solid var(--clr-border-subtle);
+  flex-shrink: 0;
+}
+
+/* Waveform + Ring container */
+.visualizer-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Animated outer ring (active during recording) */
+.visualizer-ring {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: all var(--t-slow);
+  pointer-events: none;
+}
+.visualizer-ring.recording {
+  border-color: hsl(261,80%,65%,0.3);
+  box-shadow: 0 0 40px hsl(261,80%,65%,0.15), inset 0 0 40px hsl(261,80%,65%,0.05);
+  animation: ring-pulse 2s ease-in-out infinite;
+}
+
+/* Waveform bars */
+.waveform {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 80px;
+  width: 280px;
+}
+
+.wave-bar {
+  width: 4px;
+  min-height: 4px;
+  border-radius: var(--r-full);
+  background: var(--clr-wave-idle);
+  transition: height 0.08s ease, background 0.3s ease;
+}
+.wave-bar.active {
+  background: var(--clr-accent-1);
+}
+
+/* Recording Controls */
+.recording-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-lg);
+  -webkit-app-region: no-drag;
+}
+
+/* Record Button (large center mic) */
+.record-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: var(--clr-accent-gradient);
+  padding: 3px;
+  transition: transform var(--t-base), box-shadow var(--t-base);
+  box-shadow: var(--shadow-md), var(--shadow-glow);
+  -webkit-app-region: no-drag;
+}
+.record-btn:hover {
+  transform: scale(1.07);
+  box-shadow: var(--shadow-lg), 0 0 40px var(--clr-accent-glow);
+}
+.record-btn:active { transform: scale(0.97); }
+.record-btn.recording {
+  background: linear-gradient(135deg, var(--clr-danger), hsl(340, 80%, 55%));
+  box-shadow: var(--shadow-md), 0 0 30px var(--clr-danger-glow);
+  animation: recording-pulse 1.5s ease-in-out infinite;
+}
+.record-btn.paused {
+  background: linear-gradient(135deg, var(--clr-warning), hsl(28, 90%, 52%));
+  animation: none;
+}
+
+.record-btn-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--clr-bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.record-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--clr-accent-gradient);
+  transition: all var(--t-base);
+}
+.record-btn.recording .record-icon {
+  background: var(--clr-danger);
+  border-radius: var(--r-sm);
+  width: 20px;
+  height: 20px;
+}
+.record-btn.paused .record-icon {
+  background: transparent;
+  border-style: solid;
+  border-width: 10px 0 10px 18px;
+  border-color: transparent transparent transparent var(--clr-warning);
+  border-radius: 0;
+  width: 0;
+  height: 0;
+  margin-left: 3px;
+}
+
+/* Secondary Controls (pause, stop) */
+.ctrl-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--clr-border);
+  background: var(--clr-bg-elevated);
+  color: var(--clr-text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--t-base);
+  -webkit-app-region: no-drag;
+}
+.ctrl-btn:hover:not(:disabled) {
+  background: var(--clr-bg-overlay);
+  color: var(--clr-text-primary);
+  border-color: var(--clr-accent-1);
+  box-shadow: 0 0 12px var(--clr-accent-glow);
+}
+.ctrl-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.state-label {
+  font-size: 12px;
+  color: var(--clr-text-muted);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* ============================================================
+   TRANSCRIPT SECTION
+   ============================================================ */
+.transcript-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: var(--sp-md);
+  gap: var(--sp-sm);
+}
+
+.transcript-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.transcript-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--clr-text-secondary);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.transcript-actions {
+  display: flex;
+  gap: var(--sp-xs);
+  -webkit-app-region: no-drag;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--clr-border);
+  background: var(--clr-bg-elevated);
+  color: var(--clr-text-secondary);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--t-base);
+}
+.action-btn:hover {
+  background: var(--clr-bg-overlay);
+  color: var(--clr-text-primary);
+  border-color: var(--clr-accent-1);
+  box-shadow: 0 0 10px var(--clr-accent-glow);
+}
+.action-btn-danger:hover {
+  border-color: var(--clr-danger);
+  color: var(--clr-danger);
+  box-shadow: 0 0 10px var(--clr-danger-glow);
+}
+
+.transcript-body {
+  position: relative;
+  flex: 1;
+  display: flex;
+  border: 1px solid var(--clr-border-subtle);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--clr-bg-surface);
+}
+
+.transcript-textarea {
+  flex: 1;
+  resize: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--clr-text-primary);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.7;
+  padding: var(--sp-lg);
+  caret-color: var(--clr-accent-1);
+  user-select: text;
+  -webkit-app-region: no-drag;
+}
+
+.transcript-textarea::placeholder {
+  color: var(--clr-text-muted);
+  font-style: italic;
+}
+
+/* Transcribing Overlay */
+.transcript-overlay {
+  position: absolute;
+  inset: 0;
+  background: hsl(228,15%,8%,0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-md);
+  border-radius: var(--r-lg);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--clr-bg-overlay);
+  border-top-color: var(--clr-accent-1);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.overlay-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--clr-text-secondary);
+  letter-spacing: 0.05em;
+}
+
+/* ============================================================
+   TOAST NOTIFICATION
+   ============================================================ */
+.toast {
+  position: fixed;
+  bottom: var(--sp-lg);
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--clr-bg-overlay);
+  border: 1px solid var(--clr-border);
+  color: var(--clr-text-primary);
+  padding: var(--sp-sm) var(--sp-lg);
+  border-radius: var(--r-full);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-base), transform var(--t-base);
+  z-index: 1000;
+  white-space: nowrap;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.toast.success { border-color: var(--clr-success); }
+.toast.error   { border-color: var(--clr-danger); }
+.toast.info    { border-color: var(--clr-accent-1); }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes recording-pulse {
+  0%, 100% { box-shadow: var(--shadow-md), 0 0 20px var(--clr-danger-glow); }
+  50%       { box-shadow: var(--shadow-lg), 0 0 45px var(--clr-danger-glow); }
+}
+
+@keyframes ring-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50%       { transform: scale(1.05); opacity: 1; }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bar-idle {
+  0%, 100% { height: 4px; }
+  50%       { height: 8px; }
+}
+
+/* Idle waveform gentle animation */
+.waveform.idle .wave-bar:nth-child(odd) {
+  animation: bar-idle 2.5s ease-in-out infinite;
+}
+.waveform.idle .wave-bar:nth-child(even) {
+  animation: bar-idle 2.5s ease-in-out infinite 0.5s;
+}
+
+button:disabled { cursor: not-allowed; opacity: 0.45; }
